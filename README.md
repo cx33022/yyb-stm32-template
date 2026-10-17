@@ -1,6 +1,6 @@
-# STM32F407 机器人固件模板
+# STM32F407 机器人项目
 
-这是从 `gcs-gold-medal-main/yyb_stm32` 单独整理的本地 Git 工程，保留了 Keil µVision 工程、STM32F4 标准外设库及原有模块。目标是方便复制、配置和逐项验证硬件。它目前仍包含原车的比赛任务逻辑，移植到另一块板前必须核对引脚、供电、电机地址及机构运动范围。
+这个仓库包含从 `gcs-gold-medal-main/yyb_stm32` 整理的 Keil 固件、原项目的视觉识别脚本和 PCB 设计资料。固件仍包含原车比赛任务逻辑；移植到另一块板前须核对引脚、供电、电机地址及机构运动范围。
 
 ## 默认行为
 
@@ -9,12 +9,14 @@
 | 模式宏 | 行为 |
 | --- | --- |
 | `APP_SAFE_IDLE` | 安全空闲；默认值 |
-| `PA2_PA3_SERVO_TEST` | PA2/PA3 舵机测试；`PA3_FAST_SWEEP_TEST=1` 时仅 PA3 往返，PA2 保持初值 |
-| `CHASSIS_CAN_MOTOR_TEST` | 四轮 CAN 速度测试，原车地址为 2/1/3/4 |
+| `PA2_PA3_SERVO_TEST` | PA2/PA3 舵机测试；PA3 为 838 ↔ 878 µs、PA2 为 648 ↔ 688 µs；`PA3_FAST_SWEEP_TEST=1` 时仅 PA3 往返，PA2 保持初值 |
+| `CHASSIS_CAN_MOTOR_TEST` | 旧四轮 CAN 速度测试，原车地址为 2/1/3/4；当前装配未使用 CAN 电机 |
 | `CHASSIS_POWER_ON_TEST` | 原车两轮固定路线；需要 IMU、CAN 电机与相应机构 |
 | `APP_LEGACY_TASK` | 原比赛任务入口；依赖多种外设和树莓派通信 |
 
 `CAN_INTERNAL_LOOPBACK_TEST` 可在 CAN 测试时选择 MCU 内部回环。值为 `1` 时外部电机不会收到报文。
+
+当前装配由 PA3 驱动升降、PA2 驱动夹爪，CAN 控制的电机暂未使用。启用舵机测试前须按实际机构核对供电和限位；缩小后的测试脉宽仍需现场确认。
 
 ## 构建
 
@@ -34,7 +36,7 @@
 - `imu/`：HWT101、USART2 与补光灯 TIM3；
 - `ckp/`、`lanya/`、`OLED/`、`LED/`：屏幕、UART5、OLED 与指示灯。
 
-交接给另一位开发者时，先看 [`docs/Git与Codex协作手册.md`](docs/Git与Codex协作手册.md)；当前装配见 [`docs/方案说明.md`](docs/方案说明.md)，实际板卡上电和接线先看 [`docs/转接板使用手册.md`](docs/转接板使用手册.md)。
+视觉识别脚本见 [`cv2_python/README.md`](cv2_python/README.md)，PCB 文件见 [`PCB/README.md`](PCB/README.md)。当前装配见 [`docs/方案说明.md`](docs/方案说明.md)，实际板卡上电和接线先看 [`docs/转接板使用手册.md`](docs/转接板使用手册.md)。
 
 ## 来源与发布
 

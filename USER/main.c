@@ -186,12 +186,16 @@ static void ChassisOriginalFixedRoute_Run(void)
 #endif
 
 #if PA2_PA3_SERVO_TEST
-/* PA2 = TIM2_CH3 (platform), PA3 = TIM2_CH4 (gimbal); PA1 stays idle. */
+/* Current assembly: PA2 drives the claw, PA3 drives the lift; PA1 stays idle. */
+#define PA2_TEST_HOME_US 648U
+#define PA2_TEST_TARGET_US 688U
+#define PA3_TEST_HOME_US 838U
+#define PA3_TEST_TARGET_US 878U
 volatile uint32_t pa3_gimbal_test_stage = 0U;
-volatile uint32_t pa3_gimbal_test_pulse_us = 838U;
+volatile uint32_t pa3_gimbal_test_pulse_us = PA3_TEST_HOME_US;
 volatile uint32_t pa3_gimbal_test_cycle_count = 0U;
 volatile uint32_t pa2_servo_test_stage = 0U;
-volatile uint32_t pa2_servo_test_pulse_us = 648U;
+volatile uint32_t pa2_servo_test_pulse_us = PA2_TEST_HOME_US;
 volatile uint32_t pa2_servo_test_cycle_count = 0U;
 
 static void Pa2Pa3ServoTest_Init(void)
@@ -222,9 +226,9 @@ static void Pa2Pa3ServoTest_Init(void)
     oc.TIM_OCMode = TIM_OCMode_PWM1;
     oc.TIM_OutputState = TIM_OutputState_Enable;
     oc.TIM_OCPolarity = TIM_OCPolarity_High;
-    oc.TIM_Pulse = 648U;  /* Original PA2 startup pulse in PWM_Init(). */
+    oc.TIM_Pulse = PA2_TEST_HOME_US;  /* Existing PA2 startup pulse. */
     TIM_OC3Init(TIM2, &oc);
-    oc.TIM_Pulse = 838U;  /* Original gimbal startup pulse in PWM_Init(). */
+    oc.TIM_Pulse = PA3_TEST_HOME_US;  /* Existing PA3 startup pulse. */
     TIM_OC4Init(TIM2, &oc);
     TIM_Cmd(TIM2, ENABLE);
 }
@@ -272,27 +276,27 @@ int main(void)
     delay_ms(1500);
 #if PA3_FAST_SWEEP_TEST
     while (1) {
-        Pa3GimbalTest_MoveTo(1438U);
+        Pa3GimbalTest_MoveTo(PA3_TEST_TARGET_US);
         pa3_gimbal_test_stage = 2U;
         delay_ms(700);
-        Pa3GimbalTest_MoveTo(838U);
+        Pa3GimbalTest_MoveTo(PA3_TEST_HOME_US);
         pa3_gimbal_test_stage = 3U;
         ++pa3_gimbal_test_cycle_count;
         delay_ms(700);
     }
 #else
     while (1) {
-        Pa3GimbalTest_MoveTo(1018U);
+        Pa3GimbalTest_MoveTo(PA3_TEST_TARGET_US);
         pa3_gimbal_test_stage = 2U;
         delay_ms(1000);
-        Pa3GimbalTest_MoveTo(838U);
+        Pa3GimbalTest_MoveTo(PA3_TEST_HOME_US);
         pa3_gimbal_test_stage = 3U;
         ++pa3_gimbal_test_cycle_count;
         delay_ms(500);
-        Pa2ServoTest_MoveTo(848U);
+        Pa2ServoTest_MoveTo(PA2_TEST_TARGET_US);
         pa2_servo_test_stage = 2U;
         delay_ms(1000);
-        Pa2ServoTest_MoveTo(648U);
+        Pa2ServoTest_MoveTo(PA2_TEST_HOME_US);
         pa2_servo_test_stage = 3U;
         ++pa2_servo_test_cycle_count;
         delay_ms(500);
