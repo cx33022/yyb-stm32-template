@@ -29,10 +29,12 @@
 具体修改位置见 [`docs/移植检查表.md`](docs/移植检查表.md)。常用模块：
 
 - `can_ZDT/`：CAN1 收发、ZDT 电机协议与原车轮序；
-- `Hardware/`：舵机 PWM、开关和航向 PID；
+- `Hardware/`：舵机 PWM、开关和航向 PID；当前装配定义 PA3 控制升降、PA2 控制夹爪，旧源码名称仍为云台和物块平台；
 - `SYSTEM/Serial.c`：USART1 与上位机/树莓派通信；
 - `imu/`：HWT101、USART2 与补光灯 TIM3；
 - `ckp/`、`lanya/`、`OLED/`、`LED/`：屏幕、UART5、OLED 与指示灯。
+
+交接给另一位开发者时，先看 [`docs/Git与Codex协作手册.md`](docs/Git与Codex协作手册.md)；当前装配见 [`docs/方案说明.md`](docs/方案说明.md)，实际板卡上电和接线先看 [`docs/转接板使用手册.md`](docs/转接板使用手册.md)。
 
 ## 来源与发布
 
