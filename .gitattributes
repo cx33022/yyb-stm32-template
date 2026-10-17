@@ -1,0 +1,6 @@
+# Keep original source bytes and line endings. Several imported files use GBK comments.
+*.c -text
+*.h -text
+*.s -text
+*.uvprojx -text
+*.md text eol=lf

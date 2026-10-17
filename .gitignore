@@ -1,0 +1,28 @@
+# Keil and compiler outputs
+/OBJ/
+*.o
+*.d
+*.axf
+*.hex
+*.bin
+*.map
+*.lst
+*.crf
+*.dep
+*.log
+*.build_log.htm
+
+# Keil per-user settings and debugger state
+*.uvoptx
+*.uvguix*
+*.uvgui*
+*.ini
+*.bak
+*.tmp
+
+# Local editor and OS files
+.vs/
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
